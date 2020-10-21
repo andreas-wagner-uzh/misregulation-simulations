@@ -2,7 +2,8 @@
 To simulate the evolutionary dynamics of transcription factor binding sites from the manuscript 
 "Gene misregulation can help alleviate maladaptation" by A. Wagner
 
-The repository contains three files
+The repository contains three files:
+
 misregulation_wagner_popsim_main.py: Python script for the core of the simulation program
 
 popfuncs.c: several functions used in main to implement mutation, selection, and data collection
