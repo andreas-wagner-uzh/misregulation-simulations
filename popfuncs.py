@@ -6,7 +6,7 @@ import random # for random number generators
 import numpy as np #for poisson distribution and vectorization
 import copy #to make deep copies of nested data structures
 
-#the multiplicative fitness expression
+#multiplicative fitness definition
 def mfit_mult(G, Gon, f01, f10, s01, s10):
     return ((1-s01)**((G-Gon)*f01))*((1-s10)**((Gon)*f10)) 
    
@@ -34,19 +34,19 @@ def mutpop_calc_fit_simple(pop, G, Gon, mu0p, mu0m, mu1p, mu1m, s01, s10):
     """mutate binding sites for individuals in an entire population
     where the population has a simple data structure,
     a numpy array with dimension popsize times 5
-    will only be efficient of many individuals in a mutation experience mutations"""
+    will only be efficient if many individuals in a mutation experience mutations"""
     
     popsize = len(pop)
     
     #first mutate TFBSs of genes that should be off
  
-    #now create a vector that will hold the expected number of mutational changes for 
+    #create a vector that will hold the expected number of mutational changes for 
     #binding sites supposed to be inactive
     #first for binding sites that are inactive, where mutations can create new BSs
     meancreate=[ mu0p*pop[i, 0] for i in range(popsize) ]
     #and then for BSs that are active,which mutations can destroy
     meandestroy=[ mu0m*pop[i, 1] for i in range(popsize) ]
-    #now create poisson random variates for each of these means
+    #now create Poisson random variates for each of these means
     nmutcreate=np.random.poisson(lam=meancreate, size=popsize)
     nmutdestroy=np.random.poisson(lam=meandestroy, size=popsize)
     
@@ -121,8 +121,8 @@ def calc_fitstats_simple(pop):
 #arr[1] will be a 2x2 array holding the standard deviations of these fractions for
 #each of the four categories of TFBSs, where mean and sdev
 #are taken over the whole population
-def calc_BSstats_bin_simple(pop, TFindex, G, Gon):
-   
+def calc_BSstats_bin_simple(pop, TFindex, G, Gon):   
+
     #create a numpy array to allow division by an integer
     npromG00=np.array([ pop[i,0] for i in range(0,len(pop)) ])
     #divide to calculate the fraction of BSs

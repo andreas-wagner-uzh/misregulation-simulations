@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-simulates evolution of misregulation under selection-mutation-drift dynamics,
-with mutation rates estimated from mouse TFBSs
+Simulates evolution of misregulation under selection-mutation-drift dynamics,
+with rates of mutations that create or destroy TFBSs estimated from mouse TFBSs.
+
+From the paper
+"Gene misregulation can help alleviate maladaptation" by A. Wagner
 """
 
 #needed to load mutation rate data
@@ -21,9 +24,6 @@ import popfuncs
 #to print time stamped data
 from datetime import datetime
 dateFORMAT = '%d-%m-%Y'
-
-
-
 #write to a time stamped output file
 dateFORMAT = '%d-%m-%Y'
 outfilename="popsim_"+ \
@@ -118,8 +118,6 @@ mu1m_i = interp1d(pBarr, mu1marr, kind='cubic')
 L=8
 
 #mutation rate per nucleotide, 
-#an array with only one value is used
-#in the loop below 
 for mu in [1e-5]:
     for popsize in [1e3]:
         popsize=int(popsize)
@@ -133,7 +131,7 @@ for mu in [1e-5]:
                             
                             #muxy_i is the likelihood that a single mutation 
                             #creates or destroys a TFBSs. These likelihoods are
-                            # here transformed into actual mutation rates needed
+                            #here transformed into actual mutation rates needed
                             #for population simulation
                             mu0p=L*mu*mu0p_i(pB)
                             mu0m=L*mu*mu0m_i(pB)
@@ -153,10 +151,10 @@ for mu in [1e-5]:
                           
                             #the number of generations to simulate
                             maxgen=int(1/mu)
-                            #determines the generation indices at which we report output
+                            #determines the generation indices at which we start reporting output
                             plotgen=int((maxgen-1)/20)
                             
-                            #number of generations to average over for output
+                            #number of generations to average over for output;
                             #averaging will only work if the time intervals for printing output
                             #are much longer than the time intervals for averaging. 
                             #No exception handling is implemented to enforce this condition  
@@ -174,6 +172,7 @@ for mu in [1e-5]:
                                 #that should be on or off with respect to their
                                 #mutation probability
                                 popfuncs.mutpop_calc_fit_simple(pop, G, Gon, mu0p, mu0m, mu0p, mu0m, s01, s10)
+                                #perform soft selection
                                 pop=popfuncs.select_soft_nparr_simple(pop)
                                 
                                 #begin data collection in a generation that is a multiple of plotgen
@@ -201,7 +200,6 @@ for mu in [1e-5]:
                                     #binding sites 01 (active and supposed to be inactive) 
                                     #binding sites 10 (inactive and supposed to be active) 
                                     #binding sites 11 (active and supposed to be active) 
-                                    
                                     BSstats=popfuncs.calc_BSstats_bin_simple(pop,  0, G, Gon)
                                    
                                         
