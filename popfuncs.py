@@ -69,7 +69,7 @@ def mutpop_calc_fit_simple(pop, G, Gon, mu0p, mu0m, mu1p, mu1m, s01, s10):
             #net functional BSs to be created, will increase the number of active TFBSs
             pop[i,1] =  pop[i,1] + deltan[i] 
    
-    #now mutate TFBSs of genes that should be off, using the exact same procedure    
+    #now mutate TFBSs of genes that should be on, using the exact same procedure    
     meancreate=[ mu1p*pop[i, 2] for i in range(popsize) ]
     meandestroy=[ mu1m*pop[i, 3] for i in range(popsize) ]
     nmutcreate=np.random.poisson(lam=meancreate, size=popsize)
